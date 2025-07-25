@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time audio visualizer with stunning animations. Upload your music and watch it come alive!">
+    <meta name="keywords" content="audio visualizer, music visualization, web audio api, frequency analysis">
+    <meta name="author" content="Audio Visualizer Team">
+
+    <meta property="og:title" content="Audio Visualizer - Transform Your Music">
+    <meta property="og:description" content="Experience your music visually with real-time audio visualization">
+    <meta property="og:type" content="website">
+
+    <title>🎵 Audio Visualizer - Transform Your Music</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Audio Visualizer</h1>
+            <p class="subtitle">Transform your music into mesmerizing visuals</p>
+        </header>
+
+        <div class="control-panel">
+            <div class="upload-section">
+                <label for="audio" class="upload-label">Choose your audio file</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="audio" class="file-input" accept="audio/*" aria-describedby="file-help">
+                    <button class="file-input-button" type="button" aria-label="Upload audio file">
+                        <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        Upload Audio
+                    </button>
+                </div>
+                <div id="file-help" class="sr-only">Supported formats: MP3, WAV, OGG, M4A, FLAC</div>
+            </div>
+            
+            <div class="playback-controls">
+                <button id="playPauseBtn" class="play-pause-button" aria-label="Play" disabled>
+                    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
+                        <path d="M8 5v14l11-7z"></path>
+                    </svg>
+                    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="fftSize" class="control-label">FFT Size</label>
+                    <select id="fftSize" class="select">
+                        <option value="64">64 (Fast)</option>
+                        <option value="128">128</option>
+                        <option value="256" selected>256 (Default)</option>
+                        <option value="512">512</option>
+                        <option value="1024">1024 (Detailed)</option>
+                        <option value="2048">2048 (Ultra)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="smoothing" class="control-label">Smoothing: <span id="smoothingValue">0.8</span></label>
+                    <input type="range" id="smoothing" class="slider" min="0" max="0.95" step="0.05" value="0.8">
+                </div>
+
+                <div class="control-group">
+                    <label for="colorMode" class="control-label">Color Theme</label>
+                    <select id="colorMode" class="select">
+                        <option value="spectrum">Spectrum</option>
+                        <option value="rainbow">Rainbow</option>
+                        <option value="fire">Fire</option>
+                        <option value="ocean">Ocean</option>
+                        <option value="neon">Neon</option>
+                        <option value="monochrome">Monochrome</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="sensitivity" class="control-label">Sensitivity: <span id="sensitivityValue">1.0</span></label>
+                    <input type="range" id="sensitivity" class="slider" min="0.1" max="3" step="0.1" value="1.0">
+                </div>
+            </div>
+
+            <div id="audioInfo" class="audio-info">
+                <div class="audio-title" id="audioTitle">No audio loaded</div>
+                <div class="audio-duration" id="audioDuration">Upload a file and press play!</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Processing audio file...</p>
+        </div>
+
+        <div class="visualizer-container">
+            <canvas id="canvas" width="1200" height="600" role="img" aria-label="Audio visualization display"></canvas>
+        </div>
+    </div>
+
+    <script src="index.js" defer></script>
+</body>
+</html>
